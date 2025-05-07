@@ -12,5 +12,7 @@ public class IsEventActiveMetric {
         Gauge IS_EVENT_ACTIVE = PrometheusApi.getRegisterMetrics().gaugeBuilder("active_event", "check if event active");
 
         PrometheusApi.getRegisterMetrics().collectMetric(plugin, IS_EVENT_ACTIVE, () -> Event.isEventActive ? 1.0 : 0.0,true);
+
+
     }
 }
