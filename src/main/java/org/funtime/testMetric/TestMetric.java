@@ -1,7 +1,9 @@
 package org.funtime.testMetric;
 
+import io.prometheus.client.Gauge;
 import lombok.Getter;
 
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.funtime.testMetric.Event.Event;
@@ -12,17 +14,19 @@ import su.funtime.prometheusexporter.PrometheusApi;
 public final class TestMetric extends JavaPlugin {
     @Getter
     private static TestMetric instance;
+    Gauge is_event_active_2;
+    IsEventActiveMetric eventActiveMetric;
 
     @Override
     public void onEnable() {
         instance = this;
+        eventActiveMetric = new IsEventActiveMetric();
+
         Bukkit.getPluginCommand("startevent").setExecutor(new StartEventCommand());
 
-        IsEventActiveMetric eventActiveMetric = new IsEventActiveMetric();
         eventActiveMetric.isEventActiveMetricCollector();
 
-        //
-        PrometheusApi.getRegisterMetrics().registerMetric(
+        is_event_active_2 = PrometheusApi.getRegisterMetrics().registerMetric(
                 instance,
                 "active_event_2",
                 "check if event active",
@@ -33,6 +37,10 @@ public final class TestMetric extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        // Пример для регистраци через методы gaugeBuilder() и collectMetric()
+        eventActiveMetric.stopEventGauge();
+
+        // Пример для регистрации метрики через registerMetric()
+        PrometheusApi.getRegisterMetrics().unregisterMetric(is_event_active_2);
     }
 }
