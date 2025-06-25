@@ -21,7 +21,7 @@ public class MetricRegistrationCommand implements CommandExecutor {
             TestMetric.getInstance().setGauge_metric(PrometheusApi.getRegisterMetrics().registerMetric(collectorsRegistration.getEventMetricCollector()));
             commandSender.sendMessage(ChatColor.GREEN + "Метрика зарегистрирована.");
         } else if (strings[0].equals("unregister")) {
-            PrometheusApi.getRegisterMetrics().unregisterMetric(TestMetric.getInstance().getGauge_metric());
+            PrometheusApi.getRegisterMetrics().unregisterMetric(collectorsRegistration.getEventMetricCollector());
             commandSender.sendMessage(ChatColor.RED + "Метрика разрегистрирована.");
         }
         return true;
